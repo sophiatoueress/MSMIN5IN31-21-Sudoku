@@ -10,6 +10,7 @@ using Sudoku.Shared;
 {
    public class ORToolsSimpleSolver:ISolverSudoku
     {
+
         public SudokuGrid Solve(SudokuGrid s)
         {
             Solver solver = new Solver("Sudoku");
@@ -81,22 +82,30 @@ using Sudoku.Shared;
             DecisionBuilder db = solver.MakePhase(grid_flat,
                                                   Solver.INT_VAR_SIMPLE,
                                                   Solver.INT_VALUE_SIMPLE);
+            SudokuGrid solut = new SudokuGrid();
 
             solver.NewSearch(db);
-
             while (solver.NextSolution())
             {
                 for (int i = 0; i < n; i++)
                 {
                     for (int j = 0; j < n; j++)
                     {
-                        Console.Write("{0} ", grid[i, j].Value());
-                    }
+                       // Console.Write("{0} ", grid[i, j].Value());
+
+                        solut.Cells[i][j] = (int)grid[i, j].Value();
+            }
                     Console.WriteLine();
                 }
 
                 Console.WriteLine();
             }
+
+
+            
+
+
+
 
             Console.WriteLine("\nSolutions: {0}", solver.Solutions());
             Console.WriteLine("WallTime: {0}ms", solver.WallTime());
@@ -104,8 +113,8 @@ using Sudoku.Shared;
             Console.WriteLine("Branches: {0} ", solver.Branches());
 
             solver.EndSearch();
-
-            return s;
+            
+            return solut;
         }
 
  
