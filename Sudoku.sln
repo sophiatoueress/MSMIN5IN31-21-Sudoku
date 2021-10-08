@@ -18,6 +18,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.Z3Solvers", "Sudoku.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwarmIntelligenceSolver", "SwarmIntelligenceSolver\SwarmIntelligenceSolver.csproj", "{1DEE874F-1A5F-46DD-AAFB-100C222CBC42}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SudokuTools", "..\..\..\Documents\EPF\5A\IA\Sudoku_Evolution_Solution-master\src\SudokuTools\SudokuTools.csproj", "{091EA349-36C9-42FF-A4BF-61E50D57FC09}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DemoConsoleApp", "..\..\..\Documents\EPF\5A\IA\Sudoku_Evolution_Solution-master\DemoConsoleApp\DemoConsoleApp.csproj", "{192CA617-B479-471A-821A-20C53F8F5B79}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,14 @@ Global
 		{1DEE874F-1A5F-46DD-AAFB-100C222CBC42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DEE874F-1A5F-46DD-AAFB-100C222CBC42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DEE874F-1A5F-46DD-AAFB-100C222CBC42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{091EA349-36C9-42FF-A4BF-61E50D57FC09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{091EA349-36C9-42FF-A4BF-61E50D57FC09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{091EA349-36C9-42FF-A4BF-61E50D57FC09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{091EA349-36C9-42FF-A4BF-61E50D57FC09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{192CA617-B479-471A-821A-20C53F8F5B79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{192CA617-B479-471A-821A-20C53F8F5B79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{192CA617-B479-471A-821A-20C53F8F5B79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{192CA617-B479-471A-821A-20C53F8F5B79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
