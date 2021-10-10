@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GaphicalModelSolver
+namespace GraphicalModelSolver
 {
     class Program
     {

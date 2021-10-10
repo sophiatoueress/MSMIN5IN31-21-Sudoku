@@ -18,17 +18,13 @@ namespace GraphicModelSolver
 
 
 
-        public void Solve(SudokuGrid s)
+        public SudokuGrid Solve(SudokuGrid s)
         {
             //var model = new NaiveSudokuModel();
-            robustModel.SolveSudoku(s);
+            return robustModel.SolveSudoku(s);
 
         }
 
-        SudokuGrid ISolverSudoku.Solve(SudokuGrid s)
-        {
-            throw new NotImplementedException();
-        }
     }
 
     /// <summary>
@@ -87,7 +83,9 @@ namespace GraphicModelSolver
             //Ajout des contraintes de Sudoku (all diff pour tous les voisinages)
             foreach (var cellIndex in CellIndices)
             {
-                foreach (var neighbourCellIndex in SudokuGrid.CellNeighbours[cellIndex / 9][cellIndex % 9])
+                int row = cellIndex / 9;
+                int col = cellIndex - row * 9;
+                foreach (var neighbourCellIndex in SudokuGrid.CellNeighbours[row][col])
                 {
                     int neighbourCellId = neighbourCellIndex.row * 9 + neighbourCellIndex.column;
                     if (neighbourCellId > cellIndex)
@@ -116,17 +114,16 @@ namespace GraphicModelSolver
         }
 
 
-        public virtual void SolveSudoku(SudokuGrid s)
+        public virtual SudokuGrid SolveSudoku(SudokuGrid s)
         {
-            int[] Cells = T2Dto1D(s.Cells);
+            int[] sudokuCells = T2Dto1D(s.Cells);
             Dirichlet[] dirArray = Enumerable.Repeat(Dirichlet.Uniform(CellDomain.Count), CellIndices.Count).ToArray();
 
             //On affecte les valeurs fournies par le masque à résoudre en affectant les distributions de probabilités initiales
             foreach (var cellIndex in CellIndices)
             {
-                if (Cells[cellIndex] > 0)
+                if (sudokuCells[cellIndex] > 0)
                 {
-
                     //Vector v = Vector.Zero(CellDomain.Count);
                     //v[s.Cellules[cellIndex] - 1] = 1.0;
 
@@ -134,12 +131,11 @@ namespace GraphicModelSolver
                     //Todo: Alternative: le fait de mettre une proba non nulle permet d'éviter l'erreur "zero probability" du Sudoku Easy-n°2, mais le Easy#3 n'est plus résolu
                     //tentative de changer la probabilite pour solver le sudoku 3 infructueuse
                     Vector v = Vector.Constant(CellDomain.Count, EpsilonProba);
-                    v[Cells[cellIndex] - 1] = FixedValueProba;
+                    v[sudokuCells[cellIndex] - 1] = FixedValueProba;
 
                     dirArray[cellIndex] = Dirichlet.PointMass(v);
                 }
             }
-
             CellsPrior.ObservedValue = dirArray;
 
 
@@ -167,29 +163,32 @@ namespace GraphicModelSolver
 
             foreach (var cellIndex in CellIndices)
             {
-                if (Cells[cellIndex] == 0)
+                if (sudokuCells[cellIndex] == 0)
                 {
 
                     //s.Cellules[cellIndex] = cellValues[cellIndex];
 
-
                     var mode = cellsProbsPosterior[cellIndex].GetMode();
                     var value = mode.IndexOf(mode.Max()) + 1;
-                    Cells[cellIndex] = value;
+                    sudokuCells[cellIndex] = value;
                 }
             }
 
-            s.Cells = T1Dto2D(Cells);
+            s.Cells = T1Dto2D(sudokuCells);
+
+            return s;
         }
 
-        private int[] T2Dto1D(int[][] array)
+        public static int[] T2Dto1D(int[][] array)
         {
             int[] OneDim = new int[array.Length * array[0].Length];
+            int i = 0;
             foreach (var row in array)
             {
                 foreach (var element in row)
                 {
-                    OneDim.Append(element);
+                    OneDim[i] = element;
+                    i++;
                 }
             }
             return OneDim;
@@ -199,16 +198,22 @@ namespace GraphicModelSolver
         {
             int lengh = (int)Math.Sqrt(array.Length);
             int[][] TwoDim = new int[lengh][];
+            // Initialise the jagged array to avoid  "Object reference not set to an instance of an object" exception
+            for (int i = 0; i < TwoDim.Length; ++i)
+            {
+                TwoDim[i] = new int[lengh];
+            }
+
             int RowIndex = 0;
-            int ColumnIndex = 0;
+            int ColIndex = 0;
             foreach (var element in array)
             {
-                TwoDim[RowIndex][ColumnIndex] = element;
-                RowIndex++;
-                if (RowIndex == lengh)
+                TwoDim[RowIndex][ColIndex] = element;
+                ColIndex++;
+                if (ColIndex == lengh)
                 {
-                    RowIndex = 0;
-                    ColumnIndex++;
+                    RowIndex++;
+                    ColIndex = 0;
                 }
             }
             return TwoDim;
@@ -220,7 +225,7 @@ namespace GraphicModelSolver
     /// <summary>
     /// Ce premier modèle est très faible: d'une part, il ne résout que quelques Sudokus faciles, d'autre part, le modèle est recompilé à chaque fois, ce qui prend beaucoup de temps
     /// </summary>
-    /*public class NaiveSudokuModel
+    public class NaiveSudokuModel
     {
 
         private static List<int> CellDomain = Enumerable.Range(1, 9).ToList();
@@ -248,36 +253,38 @@ namespace GraphicModelSolver
             //Ajout des contraintes de Sudoku (all diff pour tous les voisinages)
             foreach (var cellIndex in CellIndices)
             {
-                foreach (var neighbourCellIndex in SudokuGrid.CellNeighbours[cellIndex])
+                foreach (var neighbourCellIndex in SudokuGrid.CellNeighbours[cellIndex / 9][cellIndex % 9])
                 {
-                    if (neighbourCellIndex > cellIndex)
+                    int neighbourCellId = neighbourCellIndex.row * 9 + neighbourCellIndex.column;
+                    if (neighbourCellId > cellIndex)
                     {
-                        Variable.ConstrainFalse(cells[cellIndex] == cells[neighbourCellIndex]);
+                        Variable.ConstrainFalse(cells[cellIndex] == cells[neighbourCellId]);
                     }
                 }
             }
 
+            int[] sCells = RobustSudokuModel.T2Dto1D(s.Cells);
+
             //On affecte les valeurs fournies par le masque à résoudre comme variables observées
             foreach (var cellIndex in CellIndices)
             {
-                if (s.Cells[cellIndex] > 0)
+                if (sCells[cellIndex] > 0)
                 {
-                    cells[cellIndex].ObservedValue = s.Cells[cellIndex] - 1;
+                    cells[cellIndex].ObservedValue = sCells[cellIndex] - 1;
                 }
             }
 
             foreach (var cellIndex in CellIndices)
             {
-                if (s.Cells[cellIndex] == 0)
+                if (sCells[cellIndex] == 0)
                 {
                     var result = (Discrete)engine.Infer(cells[cellIndex]);
-                    s.Cells[cellIndex] = result.Point + 1;
+                    sCells[cellIndex] = result.Point + 1;
                 }
             }
 
         }
 
 
-
-    }*/
+    }
 }
