@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Sudoku.GeneticSharpSolvers\Sudoku.GeneticSharpSolvers.csproj" />
     <ProjectReference Include="..\Sudoku.Backtracking.Solvers\Sudoku.Backtracking.Solvers.csproj" />
+    <ProjectReference Include="..\Sudoku.GraphicalModelSolver\Sudoku.GraphicalModelSolver.csproj" />
     <ProjectReference Include="..\Sudoku.Shared\Sudoku.Shared.csproj" />
     <ProjectReference Include="..\Sudoku.Z3Solvers\Sudoku.Z3Solvers.csproj" />
   </ItemGroup>
