@@ -9,12 +9,8 @@ namespace Sudoku.Backtracking.Solvers
     {
         public SudokuGrid Solve(SudokuGrid s)
         {
-            
-            throw new NotImplementedException();
-        }
 
-        public SudokuGrid Solver (SudokuGrid s)
-        {
+            Backtrack(s, 0, 0);
             return s;
         }
 
