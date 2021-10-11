@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Sudoku.GeneticSharpSolvers\Sudoku.GeneticSharpSolvers.csproj" />
+    <ProjectReference Include="..\Sudoku.Backtracking.Solvers\Sudoku.Backtracking.Solvers.csproj" />
     <ProjectReference Include="..\Sudoku.Shared\Sudoku.Shared.csproj" />
     <ProjectReference Include="..\Sudoku.Z3Solvers\Sudoku.Z3Solvers.csproj" />
   </ItemGroup>
