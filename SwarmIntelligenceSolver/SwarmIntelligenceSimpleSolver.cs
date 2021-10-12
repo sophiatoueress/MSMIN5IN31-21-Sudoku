@@ -6,7 +6,7 @@ using Sudoku.Shared;
 
 namespace SwarmIntelligenceSolver
 {
-    public class SimpleSolver : ISolverSudoku
+    public class SwarmIntelligenceSimpleSolver : ISolverSudoku
     {
         private static EvolutionSolution _evo;
         private static IDisplayMatrix _disp;
