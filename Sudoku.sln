@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.Backtracking.Solvers
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.GraphicalModelSolver", "Sudoku.GraphicalModelSolver\Sudoku.GraphicalModelSolver.csproj", "{F7E2145C-30AE-42DF-B1D2-8ACAD4661FC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.ORToolsSolvers", "Sudoku.ORToolsSolvers\Sudoku.ORToolsSolvers.csproj", "{86F69D33-4F08-4F59-8BCD-DAAE50F000DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,10 @@ Global
 		{F7E2145C-30AE-42DF-B1D2-8ACAD4661FC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7E2145C-30AE-42DF-B1D2-8ACAD4661FC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7E2145C-30AE-42DF-B1D2-8ACAD4661FC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86F69D33-4F08-4F59-8BCD-DAAE50F000DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86F69D33-4F08-4F59-8BCD-DAAE50F000DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86F69D33-4F08-4F59-8BCD-DAAE50F000DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86F69D33-4F08-4F59-8BCD-DAAE50F000DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
