@@ -52,10 +52,10 @@ namespace GraphicModelSolver
 
         private const double EpsilonProba = 0.00000001;
         private static double FixedValueProba = 1.0 - ((CellDomain.Count - 1) * EpsilonProba);
+        private const int subArrayDim = 2;
 
         public RobustSudokuModel()
         {
-
 
             Range valuesRange = new Range(CellDomain.Count).Named("valuesRange");
             Range cellsRange = new Range(CellIndices.Count).Named("cellsRange");
@@ -116,6 +116,7 @@ namespace GraphicModelSolver
 
         public virtual SudokuGrid SolveSudoku(SudokuGrid s)
         {
+            int CellDiscovered = 0;
             int[] sudokuCells = T2Dto1D(s.Cells);
             Dirichlet[] dirArray = Enumerable.Repeat(Dirichlet.Uniform(CellDomain.Count), CellIndices.Count).ToArray();
 
@@ -127,23 +128,22 @@ namespace GraphicModelSolver
                     //Vector v = Vector.Zero(CellDomain.Count);
                     //v[s.Cellules[cellIndex] - 1] = 1.0;
 
-
                     //Todo: Alternative: le fait de mettre une proba non nulle permet d'éviter l'erreur "zero probability" du Sudoku Easy-n°2, mais le Easy#3 n'est plus résolu
                     //tentative de changer la probabilite pour solver le sudoku 3 infructueuse
                     Vector v = Vector.Constant(CellDomain.Count, EpsilonProba);
                     v[sudokuCells[cellIndex] - 1] = FixedValueProba;
 
                     dirArray[cellIndex] = Dirichlet.PointMass(v);
+                    CellDiscovered++;
                 }
             }
-            CellsPrior.ObservedValue = dirArray;
 
+            CellsPrior.ObservedValue = dirArray;
 
             // Todo: tester en inférant sur d'autres variables aléatoire,
             // et/ou en ayant une approche itérative: On conserve uniquement les cellules dont les valeurs ont les meilleures probabilités 
             //et on réinjecte ces valeurs dans CellsPrior comme c'est également fait dans le projet neural nets. 
             //
-
             // IFunction draw_categorical(n)// where n is the number of samples to draw from the categorical distribution
             // {
             //
@@ -155,30 +155,56 @@ namespace GraphicModelSolver
 				        ps[i][j][k] = probs[i][j][k].p; */
 
 
+            // Iteration tant que l'on a pas découvert toutes les cases
+            while (CellDiscovered < CellIndices.Count - 1){
+                
+                Dirichlet[] cellsProbsPosterior = InferenceEngine.Infer<Dirichlet[]>(ProbCells);
+
+                Dirichlet[] bestCellsProbsPosterior = getBestDirichletSubArray(cellsProbsPosterior, subArrayDim, sudokuCells);
+                
+                double minDiricheltValue = 1;
+                // Récupère le plus petit mode.Max() des meilleures bestCellsProbsPosterior 
+                foreach (var dirichlet in bestCellsProbsPosterior)
+                {
+                    var mode = dirichlet.GetMode();
+                    if(mode.Max() <= minDiricheltValue)
+                    {
+                        minDiricheltValue = mode.Max();
+                    }
+                }
+
+
+                foreach (var cellIndex in CellIndices)
+                {
+                    if (sudokuCells[cellIndex] == 0)
+                    {
+                        var mode = cellsProbsPosterior[cellIndex].GetMode();
+
+                        if (mode.Max() >= minDiricheltValue)
+                        {
+                            var value = mode.IndexOf(mode.Max()) + 1;
+                            Vector v = Vector.Constant(CellDomain.Count, EpsilonProba);
+                            v[value - 1] = FixedValueProba;
+
+                            dirArray[cellIndex] = Dirichlet.PointMass(v);
+
+                            sudokuCells[cellIndex] = value;
+                            CellDiscovered++;
+                        }
+                    }
+                }
+
+                CellsPrior.ObservedValue = dirArray;
+            }
+
             //DistributionRefArray<Discrete, int> cellsPosterior = (DistributionRefArray<Discrete, int>)InferenceEngine.Infer(Cells);
             //var cellValues = cellsPosterior.Point.Select(i => i + 1).ToList();
-
-            //Autre possibilité de variable d'inférence (bis)
-            Dirichlet[] cellsProbsPosterior = InferenceEngine.Infer<Dirichlet[]>(ProbCells);
-
-            foreach (var cellIndex in CellIndices)
-            {
-                if (sudokuCells[cellIndex] == 0)
-                {
-
-                    //s.Cellules[cellIndex] = cellValues[cellIndex];
-
-                    var mode = cellsProbsPosterior[cellIndex].GetMode();
-                    var value = mode.IndexOf(mode.Max()) + 1;
-                    sudokuCells[cellIndex] = value;
-                }
-            }
 
             s.Cells = T1Dto2D(sudokuCells);
 
             return s;
         }
-
+        
         public static int[] T2Dto1D(int[][] array)
         {
             int[] OneDim = new int[array.Length * array[0].Length];
@@ -217,6 +243,48 @@ namespace GraphicModelSolver
                 }
             }
             return TwoDim;
+        }
+
+        private Dirichlet[] getBestDirichletSubArray(Dirichlet[] dirichletArray, int N, int[] sudokuCells){
+            // Initialise la liste des N meilleurs Dirichlet avec les N premiers Dirichlet de dirichletArray
+            Dirichlet[] bestDir = new Dirichlet[N];
+
+            for (int i = 0; i < N; i++)
+            {
+                foreach (var cellIndex in CellIndices)
+                {
+                    if (sudokuCells[cellIndex] == 0)
+                    {
+                        bestDir[i] = dirichletArray[cellIndex];
+                        break;
+                    }
+                }
+            }
+
+            // Pour chaque cellule == 0 du sudoku
+            foreach (var cellIndex in CellIndices)
+            {
+                if (sudokuCells[cellIndex] == 0)
+                {
+                    var mode = dirichletArray[cellIndex].GetMode();
+                    Dirichlet minDir = bestDir[0];
+
+                    // Récupère le Dirichlet le plus petit de la liste des meilleurs Dirichlet
+                    foreach (var dir in bestDir){
+                        var dirMode = dir.GetMode();
+                        var minDirMode = minDir.GetMode();
+
+                        if(dirMode.Max() < minDirMode.Max()){
+                            minDir = dir;
+                        }
+                    }
+                    // Remplace ce Dirichlet si la valeurs max du Dirichlet de la cellule actuelle est supèrieur
+                    if(minDir.GetMode().Max() < mode.Max()){
+                        bestDir[Array.IndexOf(bestDir, minDir)] = dirichletArray[cellIndex];
+                    }
+                }
+            }
+            return bestDir;
         }
     }
 
