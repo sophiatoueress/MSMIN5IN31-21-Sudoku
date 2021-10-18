@@ -9,4 +9,14 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+
+	<ItemGroup>
+		<PackageReference Include="CsvHelper" Version="12.2.3" />
+		<PackageReference Include="Humanizer.Core" Version="2.7.9" />
+		<PackageReference Include="Keras.NET" Version="3.6.2.4" />
+	</ItemGroup>
+
+
+
+
 </Project>
