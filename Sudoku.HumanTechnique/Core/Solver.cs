@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Kermalis.SudokuSolver.Core
 {
-    internal sealed class Solver
+    public class Solver
     {
         private sealed class SolverTechnique
         {

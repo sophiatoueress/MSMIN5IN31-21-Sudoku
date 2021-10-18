@@ -1,6 +1,6 @@
 ﻿namespace Kermalis.SudokuSolver.Core
 {
-    internal sealed class SPoint
+    public class SPoint
     {
         public int X { get; }
         public int Y { get; }
