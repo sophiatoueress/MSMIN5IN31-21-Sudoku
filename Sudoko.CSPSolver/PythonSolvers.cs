@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using Python.Included;
 using Python.Runtime;
+using Sudoko.CSPSolver;
 using Sudoku.Shared;
 
 namespace Sudoku.CSPSolvers
@@ -45,39 +47,8 @@ namespace Sudoku.CSPSolvers
     }
 
 
-    //public class Z3PythonDotNetSolver : PythonSolverBase
-    //{
 
-    //    public override SudokuGrid Solve(SudokuGrid s)
-    //    {
-    //        //System.Diagnostics.Debugger.Break();
-
-    //        //For some reason, the Benchmark runner won't manage to get the mutex whereas individual execution doesn't cause issues
-    //        //using (Py.GIL())
-    //        //{
-    //        // create a Python scope
-    //        using (PyScope scope = Py.CreateScope())
-    //        {
-    //            // convert the Person object to a PyObject
-    //            PyObject pySudoku = s.ToPython();
-
-    //            // create a Python variable "person"
-    //            scope.Set("sudoku", pySudoku);
-
-    //            // the person object may now be used in Python
-    //            string code = Resources.SelfCallSolver_py;
-    //            scope.Exec(code);
-    //            var result = scope.Get("solvedSudoku");
-    //            var toReturn = result.As<SudokuGrid>();
-    //            return toReturn;
-    //        }
-    //        //}
-
-    //    }
-
-    //}
-
-    public class CSPPythonNativeSolver : PythonSolverBase
+    public class CSPPythonPipSolver : PythonSolverBase
     {
 
 
@@ -89,19 +60,25 @@ namespace Sudoku.CSPSolvers
             // create a Python scope
             using (PyScope scope = Py.CreateScope())
             {
-                // convert the Person object to a PyObject
-                PyObject pyCells = s.Cells.ToPython();
 
-                // create a Python variable "person"
-                scope.Set("instance", pyCells);
+                //Create one liner string sudoku as consumed by the pip Sudoku class
+                var strSudoku = s.Cells.Aggregate("",
+                    (sRows, row) => sRows + row.Aggregate("",
+                        (sCells, cell) => sCells + cell.ToString(CultureInfo.InvariantCulture)));
+                // convert the string object to a PyObject
 
-                // the person object may now be used in Python
-                string code = Resources.CSPSolver_py;
+                PyObject pyCells = strSudoku.ToPython();
+
+                // create a Python variable "puzzle" according to the python script
+                scope.Set("puzzle", pyCells);
+
+                // the puzzle object may now be used in Python
+                string code = Resources.CspAimaPipSolver_py;
                 scope.Exec(code);
-                var result = scope.Get("r");
-                var managedResult = result.As<int[][]>();
-                //var convertesdResult = managedResult.Select(objList => objList.Select(o => (int)o).ToArray()).ToArray();
-                return new SudokuGrid() { Cells = managedResult };
+                var pySolution = scope.Get("solution");
+                var managedSolution = pySolution.As<int[][]>();
+                var toReturn = new SudokuGrid(){Cells = managedSolution };
+                return toReturn;
             }
             //}
 
@@ -112,9 +89,8 @@ namespace Sudoku.CSPSolvers
             base.InstallPythonComponents();
             Installer.TryInstallPip();
     
-            // TODO installer aima
-            Installer.PipInstallModule("z3");
-            Installer.PipInstallModule("z3-solver");
+            Installer.PipInstallModule("aima3");
+            
         }
 
 
