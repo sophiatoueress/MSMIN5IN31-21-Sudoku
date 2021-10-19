@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sudoku.SwarmIntelligenceSol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoko.CSPSolver", "Sudoko.CSPSolver\Sudoko.CSPSolver.csproj", "{6A017087-FCBA-42DB-95F9-15D31B8B754D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.NorvigSolver", "Sudoku.NorvigSolver\Sudoku.NorvigSolver.csproj", "{0D6D18E4-5937-437C-84B0-417409DD3ACF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,6 +72,10 @@ Global
 		{6A017087-FCBA-42DB-95F9-15D31B8B754D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A017087-FCBA-42DB-95F9-15D31B8B754D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A017087-FCBA-42DB-95F9-15D31B8B754D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6D18E4-5937-437C-84B0-417409DD3ACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D6D18E4-5937-437C-84B0-417409DD3ACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D6D18E4-5937-437C-84B0-417409DD3ACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D6D18E4-5937-437C-84B0-417409DD3ACF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
