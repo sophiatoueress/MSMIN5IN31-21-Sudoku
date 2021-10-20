@@ -121,4 +121,19 @@
   <data name="CspAimaPipSolver.py" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>Resources\CspAimaPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
   </data>
+  <data name="CSPAimaPipSolver2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CSPAimaPipSolver2.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="CSPAimaPipSolver3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CSPAimaPipSolver3.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="CSPAimaPipSolver4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CSPAimaPipSolver4.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="CSPAimaPipSolver5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CSPAimaPipSolver5.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
+  <data name="CSPAimaPipSolver6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CSPAimaPipSolver6.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  </data>
 </root>
