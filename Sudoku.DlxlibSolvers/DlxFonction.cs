@@ -222,26 +222,44 @@ namespace Sudoku.DlxlibSolvers
     private static List<String> ParsingSudoku(String targertSudoku)
     {
         var newList = new List<String>();
-        String row = "";
-        for (int j = 0; j < 80; j++)
-        {
-            for (int i = 0; i < 9; i++)
+        var row = "";
+        char val = '0';
+            int i = 0;
+            for (int j = 0; j < 81; j++)
             {
-                    char val = '0';
+                if (targertSudoku[j].CompareTo(val) == 0)
+                {
+                    row = row + " ";
+                }
+                else
+                {
+                    row = row + targertSudoku[j].ToString();
+                }
+                i++;
+                if (i == 9)
+                {
+                    Console.WriteLine(row);
+                    newList.Add(row);
+                    row = "";
+                    i = 0;
+                }
+
+
+                /*for (int i = 0; i < 10; i++)
+                { 
                     if (targertSudoku[j].CompareTo(val) == 0)
                      {
                           row = row + " ";
                     }
                     else
                     {
-                        row = row + targertSudoku[j];
-                        Console.WriteLine(row);
+                        row = row + targertSudoku[j].ToString();
+                        
                     }
                     j++;
+            }*/
+
             }
-            newList.Add(row);
-                row = "";
-        }
             return newList;
     }
     }
