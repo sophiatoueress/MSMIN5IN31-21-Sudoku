@@ -3,7 +3,7 @@
 import aima3
 from aima3.csp import *
 s = Sudoku(puzzle)
-result = backtracking_search(s, order_domain_values=lcv, select_unassigned_variable=mrv, inference=mac)
+result = backtracking_search(s, select_unassigned_variable=mrv, order_domain_values=lcv, inference=forward_checking)
 #s.display(result)
 solution =   [[result.get(cell) for cell in row] for row in s.rows]
 #print(solution)
