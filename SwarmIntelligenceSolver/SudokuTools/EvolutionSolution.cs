@@ -65,10 +65,14 @@ namespace SudokuTools
             // generate a new hive of organisms with a number of epochs to try for an error-free solution or until we've killed them off too often
             while (err != 0 && extinctions < maxExtinctions)
             {
+                int[][] tempSolution = null;         
                 _rnd = new Random();
-                bestSolution = await SolveAsync(problem, numOrganisms, maxEpochs, propWorker, maxAge).ConfigureAwait(true);
-                err = SudokuTool.Errors(bestSolution);
-
+                tempSolution = await SolveAsync(problem, numOrganisms, maxEpochs, propWorker, maxAge).ConfigureAwait(true);
+                var tempErr = SudokuTool.Errors(tempSolution);
+                if (tempErr < err)
+                {
+                    bestSolution = tempSolution;
+                }
                 extinctions++; // keep track of the attempts
                 Debug.WriteLine($"{err} errors prior to {extinctions} extinction level events");
                 ++seed;// increment the seed
@@ -223,7 +227,6 @@ namespace SudokuTools
                 // find the index of the worst worker
                 var worstWkrIndex = await Task.FromResult(SudokuTool.GetWorstWorkerIndex(Hive, numWorker));
 
-
                 // have a  50/50 chance for each block in 2nd organism will be blended into 1st organism 
                 var babyOrg = await Task.FromResult(SudokuTool.MatingResult(bestWorker.Matrix, bestExplorer.Matrix, 0.50, _rnd));
                 _stats.matingPairs++;
@@ -238,7 +241,6 @@ namespace SudokuTools
                 // replace the worst worker with the next generation of worker
                 Hive[worstWkrIndex] = genNext;
                 _stats.culledCount++;
-
                 if (babyErr < TheBest.Error)
                 {
                     TheBest.Error = babyErr;
@@ -246,6 +248,7 @@ namespace SudokuTools
                     _stats.bestBabies++;
                     // Splash();
                 }
+
                 ++epoch;
                 _stats.epochsCompleted++;
             } // while

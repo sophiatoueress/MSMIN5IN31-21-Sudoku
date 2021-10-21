@@ -15,10 +15,10 @@ namespace SwarmIntelligenceSolver
         public SudokuGrid Solve(SudokuGrid sudokuGrid)
         {
             int mo = 100;
-            int mep = 5000;
-            int me = 20;
-            double worker = 0.90;
-            int maxAge = 500;
+            int mep = 10000;
+            int me = 10;
+            double worker = 0.95;
+            int maxAge = 2000;
             _disp = new ConsoleDisplayMatrix();
             _stats = new EvolutionStats();
             _evo = new EvolutionSolution(_disp, _stats);
