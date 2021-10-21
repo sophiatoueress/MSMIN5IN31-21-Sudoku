@@ -18,9 +18,9 @@ namespace Sudoku.Backtracking.Solvers
             return s;
         }
 
-        public bool Backtrack(SudokuGrid s,int x, int y)
+        public bool Backtrack(SudokuGrid s, int x, int y)
         {
-            if (x == 8 && y == 8)
+            if (x == 8 && y == 8 && s.Cells[8][8] == 0)
             {
                 int[] possibilie = s.GetPossibilities(x, y);
                 //Attention, on peut bloquer à la dernière case !
@@ -32,19 +32,23 @@ namespace Sudoku.Backtracking.Solvers
                 s.Cells[x][y] = possibilie[0];
                 return true;
             }
+            if (x == 8 && y == 8 && s.Cells[8][8] != 0)
+            {
+                return true;
+            }
             if (x > 8)
             {
                 return Backtrack(s, 0, y + 1);
             }
             if (s.Cells[x][y] != 0)
             {
-               return Backtrack(s, x+1, y);
+                return Backtrack(s, x + 1, y);
             }
             int[] possibilies = s.GetPossibilities(x, y);
             foreach (int i in possibilies)
             {
                 s.Cells[x][y] = i;
-                if (Backtrack(s,x+1,y))
+                if (Backtrack(s, x + 1, y))
                 {
                     return true;
                 }
@@ -55,7 +59,7 @@ namespace Sudoku.Backtracking.Solvers
             }
             return false;
         }
-        
+
     }
 
     /// <summary>
