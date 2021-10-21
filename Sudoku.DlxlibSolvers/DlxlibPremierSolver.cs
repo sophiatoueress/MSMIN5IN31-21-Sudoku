@@ -10,6 +10,8 @@ namespace Sudoku.DlxlibSolvers
 
         public SudokuGrid Solve(SudokuGrid s)
         {
+
+            DlxFonction.Solver();
             return s;
         }
     }
