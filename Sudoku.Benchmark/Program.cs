@@ -26,7 +26,7 @@ namespace Sudoku.Benchmark
                     switch (intMode)
                     {
                         case 1:
-                            SingleSolverTest();
+                            DlxlibSolvers.DlxFonction.Solver();
                             break;
                         case 2:
                             //Init solvers
