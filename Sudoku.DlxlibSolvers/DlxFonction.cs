@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using DlxLib;
+using System.Collections.Generic;
+using System.IO;
 using Sudoku.Shared;
-
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 
 namespace Sudoku.DlxlibSolvers
 {
@@ -219,20 +223,24 @@ namespace Sudoku.DlxlibSolvers
     {
         var newList = new List<String>();
         String row = "";
-        for (int j = 0; j < 81; j++)
+        for (int j = 0; j < 80; j++)
         {
             for (int i = 0; i < 9; i++)
             {
-                if (targertSudoku[j].CompareTo('0') == 1)
-                {
-                    row = row + " ";
-                }
-                else
-                {
-                    row = row + targertSudoku[j];
-                }
+                    char val = '0';
+                    if (targertSudoku[j].CompareTo(val) == 0)
+                     {
+                          row = row + " ";
+                    }
+                    else
+                    {
+                        row = row + targertSudoku[j];
+                        Console.WriteLine(row);
+                    }
+                    j++;
             }
             newList.Add(row);
+                row = "";
         }
             return newList;
     }

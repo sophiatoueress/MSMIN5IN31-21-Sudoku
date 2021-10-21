@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 
 namespace Sudoku.DlxlibSolvers
 {
@@ -15,6 +15,7 @@ namespace Sudoku.DlxlibSolvers
 
         public Grid(IImmutableList<string> rowStrings)
         {
+            Console.WriteLine($"{rowStrings.Count()}");
             if (rowStrings == null) throw new ArgumentNullException(nameof(rowStrings));
             if (rowStrings.Count != 9) throw new ArgumentException(nameof(rowStrings));
 
