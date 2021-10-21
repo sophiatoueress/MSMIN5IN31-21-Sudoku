@@ -15,7 +15,7 @@ namespace SwarmIntelligenceSolver
         public SudokuGrid Solve(SudokuGrid sudokuGrid)
         {
             int mo = 200;
-            int mep = 3000;
+            int mep = 5000;
             int me = 20;
             double worker = 0.90;
             int maxAge = 1000;
