@@ -118,22 +118,31 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="CspAimaPipSolver.py" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\CspAimaPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  <data name="CspAimaFuvUdvPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CspAimaFuvUdvPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="CSPAimaPipSolver2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\CSPAimaPipSolver2.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="CspAimaMrvUdvPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CspAimaMrvUdvPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="CSPAimaPipSolver3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\CSPAimaPipSolver3.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="CspAimaFuvLcvPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CspAimaFuvLcvPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="CSPAimaPipSolver4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\CSPAimaPipSolver4.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+	<data name="CspAimaMrvLcvPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>Resources\CspAimaMrvLcvPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+	</data>
+  <data name="CspAimaFuvUdvMacPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CspAimaFuvUdvMacPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="CSPAimaPipSolver5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\CSPAimaPipSolver5.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+  <data name="CspAimaFuvUdvFcPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\CspAimaFuvUdvFcPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
   </data>
-  <data name="CSPAimaPipSolver6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>Resources\CSPAimaPipSolver6.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
-  </data>
+	<data name="CspAimaMrvLcvMacPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>Resources\CspAimaMrvLcvMacPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+	</data>
+	<data name="CspAimaMrvLcvFcPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>Resources\CspAimaMrvLcvFcPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+	</data>
+	<data name="CspAimaMinConflictsPipSolver_py" type="System.Resources.ResXFileRef, System.Windows.Forms">
+		<value>Resources\CspAimaMinConflictsPipSolver.py;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-8</value>
+	</data>
 </root>

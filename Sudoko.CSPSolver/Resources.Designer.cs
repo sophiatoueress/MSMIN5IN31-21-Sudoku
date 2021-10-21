@@ -61,55 +61,6 @@ namespace Sudoko.CSPSolver {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à # reprÃ©sentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
-        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne Ã©galement avec des 0 Ã  la place des .
-        ///import aima3
-        ///from aima3.csp import *
-        ///s = Sudoku(puzzle)
-        ///result = backtracking_search(s, order_domain_values=lcv, select_unassigned_variable=mrv, inference=mac)
-        ///#s.display(result)
-        ///solution =   [[result.get(cell) for cell in row] for row in s.rows]
-        ///#print(solution).
-        /// </summary>
-        internal static string CspAimaPipSolver_py {
-            get {
-                return ResourceManager.GetString("CspAimaPipSolver.py", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
-        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
-        ///import aima3
-        ///from aima3.csp import *
-        ///s = Sudoku(puzzle)
-        ///result = backtracking_search(s, select_unassigned_variable=first_unassigned_variable, order_domain_values=unordered_domain_values, inference=no_inference)
-        ///#s.display(result)
-        ///solution =   [[result.get(cell) for ce [le reste de la chaîne a été tronqué]&quot;;.
-        /// </summary>
-        internal static string CSPAimaPipSolver2 {
-            get {
-                return ResourceManager.GetString("CSPAimaPipSolver2", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
-        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
-        ///import aima3
-        ///from aima3.csp import *
-        ///s = Sudoku(puzzle)
-        ///result = backtracking_search(s, select_unassigned_variable=mrv , order_domain_values=unordered_domain_values, inference=no_inference)
-        ///#s.display(result)
-        ///solution =   [[result.get(cell) for cell in row] for row in [le reste de la chaîne a été tronqué]&quot;;.
-        /// </summary>
-        internal static string CSPAimaPipSolver3 {
-            get {
-                return ResourceManager.GetString("CSPAimaPipSolver3", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
         ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
         ///import aima3
@@ -119,25 +70,9 @@ namespace Sudoko.CSPSolver {
         ///#s.display(result)
         ///solution =   [[result.get(cell) for cell in row] for row  [le reste de la chaîne a été tronqué]&quot;;.
         /// </summary>
-        internal static string CSPAimaPipSolver4 {
+        internal static string CspAimaFuvLcvPipSolver_py {
             get {
-                return ResourceManager.GetString("CSPAimaPipSolver4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
-        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
-        ///import aima3
-        ///from aima3.csp import *
-        ///s = Sudoku(puzzle)
-        ///result = backtracking_search(s, select_unassigned_variable=first_unassigned_variable, order_domain_values=unordered_domain_values, inference=mac)
-        ///#s.display(result)
-        ///solution =   [[result.get(cell) for cell in row [le reste de la chaîne a été tronqué]&quot;;.
-        /// </summary>
-        internal static string CSPAimaPipSolver5 {
-            get {
-                return ResourceManager.GetString("CSPAimaPipSolver5", resourceCulture);
+                return ResourceManager.GetString("CspAimaFuvLcvPipSolver_py", resourceCulture);
             }
         }
         
@@ -151,9 +86,125 @@ namespace Sudoko.CSPSolver {
         ///#s.display(result)
         ///solution =   [[result.get(cell) f [le reste de la chaîne a été tronqué]&quot;;.
         /// </summary>
-        internal static string CSPAimaPipSolver6 {
+        internal static string CspAimaFuvUdvFcPipSolver_py {
             get {
-                return ResourceManager.GetString("CSPAimaPipSolver6", resourceCulture);
+                return ResourceManager.GetString("CspAimaFuvUdvFcPipSolver_py", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
+        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
+        ///import aima3
+        ///from aima3.csp import *
+        ///s = Sudoku(puzzle)
+        ///result = backtracking_search(s, select_unassigned_variable=first_unassigned_variable, order_domain_values=unordered_domain_values, inference=mac)
+        ///#s.display(result)
+        ///solution =   [[result.get(cell) for cell in row [le reste de la chaîne a été tronqué]&quot;;.
+        /// </summary>
+        internal static string CspAimaFuvUdvMacPipSolver_py {
+            get {
+                return ResourceManager.GetString("CspAimaFuvUdvMacPipSolver_py", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
+        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
+        ///import aima3
+        ///from aima3.csp import *
+        ///s = Sudoku(puzzle)
+        ///result = backtracking_search(s, select_unassigned_variable=first_unassigned_variable, order_domain_values=unordered_domain_values, inference=no_inference)
+        ///#s.display(result)
+        ///solution =   [[result.get(cell) for ce [le reste de la chaîne a été tronqué]&quot;;.
+        /// </summary>
+        internal static string CspAimaFuvUdvPipSolver_py {
+            get {
+                return ResourceManager.GetString("CspAimaFuvUdvPipSolver_py", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
+        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
+        ///import aima3
+        ///from aima3.csp import *
+        ///s = Sudoku(puzzle)
+        ///result = min_conflicts(s, max_steps=1000000)
+        ///#s.display(result)
+        ///solution =   [[result.get(cell) for cell in row] for row in s.rows]
+        ///#print(solution).
+        /// </summary>
+        internal static string CspAimaMinConflictsPipSolver_py {
+            get {
+                return ResourceManager.GetString("CspAimaMinConflictsPipSolver_py", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à # reprÃ©sentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
+        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne Ã©galement avec des 0 Ã  la place des .
+        ///import aima3
+        ///from aima3.csp import *
+        ///s = Sudoku(puzzle)
+        ///result = backtracking_search(s, select_unassigned_variable=mrv, order_domain_values=lcv, inference=forward_checking)
+        ///#s.display(result)
+        ///solution =   [[result.get(cell) for cell in row] for row in s.rows]
+        ///#pri [le reste de la chaîne a été tronqué]&quot;;.
+        /// </summary>
+        internal static string CspAimaMrvLcvFcPipSolver_py {
+            get {
+                return ResourceManager.GetString("CspAimaMrvLcvFcPipSolver_py", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à # reprÃ©sentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
+        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne Ã©galement avec des 0 Ã  la place des .
+        ///import aima3
+        ///from aima3.csp import *
+        ///s = Sudoku(puzzle)
+        ///result = backtracking_search(s, select_unassigned_variable=mrv, order_domain_values=lcv, inference=mac)
+        ///#s.display(result)
+        ///solution =   [[result.get(cell) for cell in row] for row in s.rows]
+        ///#print(solution).
+        /// </summary>
+        internal static string CspAimaMrvLcvMacPipSolver_py {
+            get {
+                return ResourceManager.GetString("CspAimaMrvLcvMacPipSolver_py", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
+        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
+        ///import aima3
+        ///from aima3.csp import *
+        ///s = Sudoku(puzzle)
+        ///result = backtracking_search(s, select_unassigned_variable=mrv , order_domain_values=lcv, inference=no_inference)
+        ///#s.display(result)
+        ///solution =   [[result.get(cell) for cell in row] for row in s.rows]
+        ///#print(sol [le reste de la chaîne a été tronqué]&quot;;.
+        /// </summary>
+        internal static string CspAimaMrvLcvPipSolver_py {
+            get {
+                return ResourceManager.GetString("CspAimaMrvLcvPipSolver_py", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à # représentation d&apos;un sudoku https://github.com/aimacode/aima-python/blob/master/csp.py#L726
+        ///# puzzle = &apos;..3.2.6..9..3.5..1..18.64....81.29..7.......8..67.82....26.95..8..2.3..9..5.1.3..&apos; fonctionne également avec des 0 à la place des .
+        ///import aima3
+        ///from aima3.csp import *
+        ///s = Sudoku(puzzle)
+        ///result = backtracking_search(s, select_unassigned_variable=mrv , order_domain_values=unordered_domain_values, inference=no_inference)
+        ///#s.display(result)
+        ///solution =   [[result.get(cell) for cell in row] for row in [le reste de la chaîne a été tronqué]&quot;;.
+        /// </summary>
+        internal static string CspAimaMrvUdvPipSolver_py {
+            get {
+                return ResourceManager.GetString("CspAimaMrvUdvPipSolver_py", resourceCulture);
             }
         }
     }

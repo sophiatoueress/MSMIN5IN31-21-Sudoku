@@ -46,9 +46,7 @@ namespace Sudoku.CSPSolvers
 
     }
 
-
-
-    public class CSPPythonPipSolver : PythonSolverBase
+    public abstract class CspPipSolverBase : PythonSolverBase
     {
 
 
@@ -73,215 +71,147 @@ namespace Sudoku.CSPSolvers
                 scope.Set("puzzle", pyCells);
 
                 // the puzzle object may now be used in Python
-                string code = Resources.CspAimaPipSolver_py;
+                string code = GetPythonScript();
                 scope.Exec(code);
                 var pySolution = scope.Get("solution");
                 var managedSolution = pySolution.As<int[][]>();
-                var toReturn = new SudokuGrid(){Cells = managedSolution };
+                var toReturn = new SudokuGrid() { Cells = managedSolution };
                 return toReturn;
             }
             //}
 
         }
+
+        protected abstract string GetPythonScript();
 
         protected override void InstallPythonComponents()
         {
             base.InstallPythonComponents();
             Installer.TryInstallPip();
-    
+
             Installer.PipInstallModule("aima3");
-            
+
         }
 
 
     }
 
-    public class CSPPythonPipSolver2 : CSPPythonPipSolver
+    // Global search with no heuristic and no inference
+  
+
+    public class CspAimaFuvUdvPythonPipSolver : CspPipSolverBase
     {
         //Solver with basic AIMA Pip parameters
 
-        public override SudokuGrid Solve(SudokuGrid s)
+        protected override string GetPythonScript()
         {
-
-            //using (Py.GIL())
-            //{
-            // create a Python scope
-            using (PyScope scope = Py.CreateScope())
-            {
-
-                //Create one liner string sudoku as consumed by the pip Sudoku class
-                var strSudoku = s.Cells.Aggregate("",
-                    (sRows, row) => sRows + row.Aggregate("",
-                        (sCells, cell) => sCells + cell.ToString(CultureInfo.InvariantCulture)));
-                // convert the string object to a PyObject
-
-                PyObject pyCells = strSudoku.ToPython();
-
-                // create a Python variable "puzzle" according to the python script
-                scope.Set("puzzle", pyCells);
-
-                // the puzzle object may now be used in Python
-                string code = Resources.CSPAimaPipSolver2;
-                scope.Exec(code);
-                var pySolution = scope.Get("solution");
-                var managedSolution = pySolution.As<int[][]>();
-                var toReturn = new SudokuGrid() { Cells = managedSolution };
-                return toReturn;
-            }
-            //}
-
+            return Resources.CspAimaFuvUdvPipSolver_py;
         }
 
     }
 
-    public class CSPPythonPipSolver3 : CSPPythonPipSolver
+
+    // Adding search heuristics
+
+
+    public class CspAimaMrvUdvPythonPipSolver : CspPipSolverBase
     {
         //Solver to evaluate the influence of the mrv (minimum-remaining-values heuristic) parameter
 
-        public override SudokuGrid Solve(SudokuGrid s)
+        protected override string GetPythonScript()
         {
+            return Resources.CspAimaMrvUdvPipSolver_py;
+        }
+    }
 
-            //using (Py.GIL())
-            //{
-            // create a Python scope
-            using (PyScope scope = Py.CreateScope())
-            {
 
-                //Create one liner string sudoku as consumed by the pip Sudoku class
-                var strSudoku = s.Cells.Aggregate("",
-                    (sRows, row) => sRows + row.Aggregate("",
-                        (sCells, cell) => sCells + cell.ToString(CultureInfo.InvariantCulture)));
-                // convert the string object to a PyObject
 
-                PyObject pyCells = strSudoku.ToPython();
 
-                // create a Python variable "puzzle" according to the python script
-                scope.Set("puzzle", pyCells);
+    public class CspAimaFuvLcvPythonPipSolver : CspPipSolverBase
+    {
+        //Solver to evaluate the influence of the  mrv (minimum-remaining-values heuristic) and lcv (least constraining-values heursitic) parameter
 
-                // the puzzle object may now be used in Python
-                string code = Resources.CSPAimaPipSolver3;
-                scope.Exec(code);
-                var pySolution = scope.Get("solution");
-                var managedSolution = pySolution.As<int[][]>();
-                var toReturn = new SudokuGrid() { Cells = managedSolution };
-                return toReturn;
-            }
-            //}
-
+        protected override string GetPythonScript()
+        {
+            return Resources.CspAimaFuvLcvPipSolver_py;
         }
 
     }
 
-    public class CSPPythonPipSolver4 : CSPPythonPipSolver
+    public class CspAimaMrvLcvPythonPipSolver : CspPipSolverBase
     {
         //Solver to evaluate the influence of the lcv (least constraining-values heursitic) parameter
 
-        public override SudokuGrid Solve(SudokuGrid s)
+        protected override string GetPythonScript()
         {
-
-            //using (Py.GIL())
-            //{
-            // create a Python scope
-            using (PyScope scope = Py.CreateScope())
-            {
-
-                //Create one liner string sudoku as consumed by the pip Sudoku class
-                var strSudoku = s.Cells.Aggregate("",
-                    (sRows, row) => sRows + row.Aggregate("",
-                        (sCells, cell) => sCells + cell.ToString(CultureInfo.InvariantCulture)));
-                // convert the string object to a PyObject
-
-                PyObject pyCells = strSudoku.ToPython();
-
-                // create a Python variable "puzzle" according to the python script
-                scope.Set("puzzle", pyCells);
-
-                // the puzzle object may now be used in Python
-                string code = Resources.CSPAimaPipSolver4;
-                scope.Exec(code);
-                var pySolution = scope.Get("solution");
-                var managedSolution = pySolution.As<int[][]>();
-                var toReturn = new SudokuGrid() { Cells = managedSolution };
-                return toReturn;
-            }
-            //}
-
+            return Resources.CspAimaMrvLcvPipSolver_py;
         }
 
     }
 
-    public class CSPPythonPipSolver5 : CSPPythonPipSolver
+    // Adding inference (domain reduction)
+
+    public class CspAimaFuvUdvMacPythonPipSolver : CspPipSolverBase
     {
-        //Solver to evaluate the influence of the mac (Maintain arc consistency AC-3) parameter
-
-        public override SudokuGrid Solve(SudokuGrid s)
+        //Solver to evaluate the influence of the mac (Maintain arc consistency inference AC-3) parameter
+        protected override string GetPythonScript()
         {
+            return Resources.CspAimaFuvUdvMacPipSolver_py;
+        }
 
-            //using (Py.GIL())
-            //{
-            // create a Python scope
-            using (PyScope scope = Py.CreateScope())
-            {
 
-                //Create one liner string sudoku as consumed by the pip Sudoku class
-                var strSudoku = s.Cells.Aggregate("",
-                    (sRows, row) => sRows + row.Aggregate("",
-                        (sCells, cell) => sCells + cell.ToString(CultureInfo.InvariantCulture)));
-                // convert the string object to a PyObject
+    }
 
-                PyObject pyCells = strSudoku.ToPython();
+    public class CspAimaFuvUdvFcPythonPipSolver : CspPipSolverBase
+    {
+        //Solver to evaluate the influence of the forward_checking parameter (inference : Prune neighbor values inconsistent with var=value)
 
-                // create a Python variable "puzzle" according to the python script
-                scope.Set("puzzle", pyCells);
-
-                // the puzzle object may now be used in Python
-                string code = Resources.CSPAimaPipSolver5;
-                scope.Exec(code);
-                var pySolution = scope.Get("solution");
-                var managedSolution = pySolution.As<int[][]>();
-                var toReturn = new SudokuGrid() { Cells = managedSolution };
-                return toReturn;
-            }
-            //}
-
+        protected override string GetPythonScript()
+        {
+            return Resources.CspAimaFuvUdvFcPipSolver_py;
         }
 
     }
 
-    public class CSPPythonPipSolver6 : CSPPythonPipSolver
+
+    // Combining search heuristics and inference
+
+    public class CspAimaMrvLcvMacPythonPipSolver : CspPipSolverBase
     {
-        //Solver to evaluate the influence of the forward_checking parameter (Prune neighbor values inconsistent with var=value)
 
-        public override SudokuGrid Solve(SudokuGrid s)
+        //Solver combining mrv (minimum-remaining-values heuristic) LCV (least-constraint-value heuristic) and Mac inference (AC-3) parameters
+
+        protected override string GetPythonScript()
         {
+            return Resources.CspAimaMrvLcvMacPipSolver_py;
+        }
 
-            //using (Py.GIL())
-            //{
-            // create a Python scope
-            using (PyScope scope = Py.CreateScope())
-            {
 
-                //Create one liner string sudoku as consumed by the pip Sudoku class
-                var strSudoku = s.Cells.Aggregate("",
-                    (sRows, row) => sRows + row.Aggregate("",
-                        (sCells, cell) => sCells + cell.ToString(CultureInfo.InvariantCulture)));
-                // convert the string object to a PyObject
+    }
 
-                PyObject pyCells = strSudoku.ToPython();
+    // Best results (see Norvig method for an analog)
 
-                // create a Python variable "puzzle" according to the python script
-                scope.Set("puzzle", pyCells);
+    public class CspAimaMrvLcvFcPythonPipSolver : CspPipSolverBase
+    {
 
-                // the puzzle object may now be used in Python
-                string code = Resources.CSPAimaPipSolver6;
-                scope.Exec(code);
-                var pySolution = scope.Get("solution");
-                var managedSolution = pySolution.As<int[][]>();
-                var toReturn = new SudokuGrid() { Cells = managedSolution };
-                return toReturn;
-            }
-            //}
+        //Solver combining mrv (minimum-remaining-values heuristic) LCV (least-constraint-value heuristic) and Forward Checking infernece parameters
 
+        protected override string GetPythonScript()
+        {
+            return Resources.CspAimaMrvLcvFcPipSolver_py;
+        }
+
+
+    }
+
+    //Switching to local search: poor result because of non dense solutions in state landscape unlike classical planning or NQueens problem
+    public class CspAimaMinConflictsPythonPipSolver : CspPipSolverBase
+    {
+        //Solver using local search with MinConflicts heuristics instead of backtracking global search
+
+        protected override string GetPythonScript()
+        {
+            return Resources.CspAimaMinConflictsPipSolver_py;
         }
 
     }
