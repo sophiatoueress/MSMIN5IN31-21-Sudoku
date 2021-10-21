@@ -13,12 +13,10 @@ namespace GraphicModelSolver
 
         public int NbIterationCells { get; set; } = 2;
 
-
-
         protected override void DoInference(Dirichlet[] dirArray, int[] sudokuCells)
         {
 
-            int cellDiscovered = sudokuCells.Count(c =>c > 0 );
+            int cellDiscovered = sudokuCells.Count(c => c > 0);
 
             // Iteration tant que l'on a pas découvert toutes les cases
             while (cellDiscovered < CellIndices.Count - 1)
@@ -26,92 +24,59 @@ namespace GraphicModelSolver
 
                 Dirichlet[] cellsProbsPosterior = InferenceEngine.Infer<Dirichlet[]>(ProbCells);
 
-                Dirichlet[] bestCellsProbsPosterior = getBestDirichletSubArray(cellsProbsPosterior, NbIterationCells, sudokuCells);
+                int[] bestCellsProbsPosteriorIndex = getBestDirichletSubArrayIndex(cellsProbsPosterior, NbIterationCells, sudokuCells);
 
-                double minDiricheltValue = 1;
-                // Récupère le plus petit mode.Max() des meilleures bestCellsProbsPosterior 
-                foreach (var dirichlet in bestCellsProbsPosterior)
+                foreach (var index in bestCellsProbsPosteriorIndex)
                 {
-                    var mode = dirichlet.GetMode();
+                    var mode = cellsProbsPosterior[index].GetMode();
+                    var value = mode.IndexOf(mode.Max()) + 1;
 
+                    Vector v = Vector.Constant(CellDomain.Count, EpsilonProba);
+                    v[value - 1] = FixedValueProba;
 
-                    if (mode.Max() <= minDiricheltValue)
-                    {
-                        minDiricheltValue = mode.Max();
-                    }
-                }
+                    dirArray[index] = Dirichlet.PointMass(v);
 
-                //todo: pourquoi reparcourir les cellules alors que nous avons déjà la liste de celles qui nous intéressent?
-                foreach (var cellIndex in CellIndices)
-                {
-                    if (sudokuCells[cellIndex] == 0)
-                    {
-                        var mode = cellsProbsPosterior[cellIndex].GetMode();
-
-                        if (mode.Max() >= minDiricheltValue)
-                        {
-                            var value = mode.IndexOf(mode.Max()) + 1;
-                            Vector v = Vector.Constant(CellDomain.Count, EpsilonProba);
-                            v[value - 1] = FixedValueProba;
-
-                            dirArray[cellIndex] = Dirichlet.PointMass(v);
-
-                            sudokuCells[cellIndex] = value;
-                            cellDiscovered++;
-                        }
-                    }
+                    sudokuCells[index] = value;
+                    cellDiscovered++;
                 }
 
                 CellsPrior.ObservedValue = dirArray;
             }
         }
 
-        private Dirichlet[] getBestDirichletSubArray(Dirichlet[] dirichletArray, int N, int[] sudokuCells)
+        private int[] getBestDirichletSubArrayIndex(Dirichlet[] dirichletArray, int N, int[] sudokuCells)
         {
-            // Initialise la liste des N meilleurs Dirichlet avec les N premiers Dirichlet de dirichletArray
-            Dirichlet[] bestDir = new Dirichlet[N];
-
-
-            //Todo: cette initialisation ne revient-elle pas à chercher la première cellule vide N fois?
-            for (int i = 0; i < N; i++)
-            {
-                foreach (var cellIndex in CellIndices)
-                {
-                    if (sudokuCells[cellIndex] == 0)
-                    {
-                        bestDir[i] = dirichletArray[cellIndex];
-                        break;
-                    }
-                }
-            }
+            // Initialise la liste des N meilleurs index avec les N premiers index de dirichletArray pour les cellules vides
+            int[] bestDirIndex = sudokuCells.Select((cell, index) => cell == 0 ? index : -1).Where(index => index != -1).Take(N).ToArray();
 
             // Pour chaque cellule == 0 du sudoku
             foreach (var cellIndex in CellIndices)
             {
                 if (sudokuCells[cellIndex] == 0)
                 {
-                    var mode = dirichletArray[cellIndex].GetMode();
-                    Dirichlet minDir = bestDir[0];
+                    var currentMode = dirichletArray[cellIndex].GetMode();
 
-                    // Récupère le Dirichlet le plus petit de la liste des meilleurs Dirichlet
-                    foreach (var dir in bestDir)
+                    int minDirIndex = bestDirIndex[0];
+
+                    // Récupère l'index du Dirichlet le plus petit de la liste d'index des meilleurs Dirichlet
+                    foreach (var index in bestDirIndex)
                     {
-                        var dirMode = dir.GetMode();
-                        var minDirMode = minDir.GetMode();
+                        var currentDirMode = dirichletArray[index].GetMode();
+                        var minDirMode = dirichletArray[minDirIndex].GetMode();
 
-                        if (dirMode.Max() < minDirMode.Max())
+                        if (currentDirMode.Max() < minDirMode.Max())
                         {
-                            minDir = dir;
+                            minDirIndex = index;
                         }
                     }
                     // Remplace ce Dirichlet si la valeurs max du Dirichlet de la cellule actuelle est supèrieur
-                    if (minDir.GetMode().Max() < mode.Max())
+                    if (dirichletArray[minDirIndex].GetMode().Max() < currentMode.Max())
                     {
-                        bestDir[Array.IndexOf(bestDir, minDir)] = dirichletArray[cellIndex];
+                        bestDirIndex[Array.IndexOf(bestDirIndex, minDirIndex)] = cellIndex;
                     }
                 }
             }
-            return bestDir;
+            return bestDirIndex;
         }
 
     }
