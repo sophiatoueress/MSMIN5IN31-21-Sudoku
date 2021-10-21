@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Text.Encodings;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 
 namespace Sudoku.DlxlibSolvers
 {
@@ -61,7 +62,7 @@ namespace Sudoku.DlxlibSolvers
             DrawSeparatorLine(CornerBottomLeft, CornerBottomRight, HorizontalAndUp);
         }
 
-        private static readonly Encoding Encoding850 = Encoding.GetEncoding(850);
+        /*private static readonly System.Text.Encoding Encoding850 = Encoding.GetEncoding(850);
         private static readonly string CornerTopLeft = Encoding850.GetString(new byte[] { 218 });
         private static readonly string CornerTopRight = Encoding850.GetString(new byte[] { 191 });
         private static readonly string CornerBottomLeft = Encoding850.GetString(new byte[] { 192 });
@@ -72,7 +73,19 @@ namespace Sudoku.DlxlibSolvers
         private static readonly string VerticalAndLeft = Encoding850.GetString(new byte[] { 180 });
         private static readonly string HorizontalAndUp = Encoding850.GetString(new byte[] { 193 });
         private static readonly string HorizontalAndDown = Encoding850.GetString(new byte[] { 194 });
-        private static readonly string HorizontalAndVertical = Encoding850.GetString(new byte[] { 197 });
+        private static readonly string HorizontalAndVertical = Encoding850.GetString(new byte[] { 197 });*/
+
+        private static readonly string CornerTopLeft = "<";
+        private static readonly string CornerTopRight = ">";
+        private static readonly string CornerBottomLeft = "<";
+        private static readonly string CornerBottomRight = ">";
+        private static readonly string CentreHorizontal = "|";
+        private static readonly string CentreVertical = "|";
+        private static readonly string VerticalAndRight = "|";
+        private static readonly string VerticalAndLeft = "|";
+        private static readonly string HorizontalAndUp = "-";
+        private static readonly string HorizontalAndDown = "_";
+        private static readonly string HorizontalAndVertical = ".";
 
         private void DrawRow(int row)
         {
