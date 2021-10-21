@@ -65,7 +65,7 @@ namespace SudokuTools
             // generate a new hive of organisms with a number of epochs to try for an error-free solution or until we've killed them off too often
             while (err != 0 && extinctions < maxExtinctions)
             {
-                _rnd = new Random(seed);
+                _rnd = new Random();
                 bestSolution = await SolveAsync(problem, numOrganisms, maxEpochs).ConfigureAwait(true);
                 err = SudokuTool.Errors(bestSolution);
 
