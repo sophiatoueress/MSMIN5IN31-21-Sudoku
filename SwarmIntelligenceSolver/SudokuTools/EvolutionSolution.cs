@@ -53,7 +53,7 @@ namespace SudokuTools
         /// <param name="maxEpochs">number of iterations (generations) each organism can run through to find the optimal solution</param>
         /// <param name="maxExtinctions">if an optimal solution isn't found after the maxEpochs, all organisms are killed and the cycle is restarted if not more than maxExtinctions.</param>
         /// <returns>The best solution (int[][]) found within the specified time.</returns>
-        public async Task<int[][]> SolveB4ExtinctCount_Async(int[][] problem, int numOrganisms, int maxEpochs, int maxExtinctions)
+        public async Task<int[][]> SolveB4ExtinctCount_Async(int[][] problem, int numOrganisms, int maxEpochs, int maxExtinctions, double propWorker, int maxAge)
         {
             OriginalMatrix = SudokuTool.DuplicateMatrix(problem);
             // wrapper for SolveEvo()
@@ -65,10 +65,14 @@ namespace SudokuTools
             // generate a new hive of organisms with a number of epochs to try for an error-free solution or until we've killed them off too often
             while (err != 0 && extinctions < maxExtinctions)
             {
+                int[][] tempSolution = null;         
                 _rnd = new Random();
-                bestSolution = await SolveAsync(problem, numOrganisms, maxEpochs).ConfigureAwait(true);
-                err = SudokuTool.Errors(bestSolution);
-
+                tempSolution = await SolveAsync(problem, numOrganisms, maxEpochs, propWorker, maxAge).ConfigureAwait(true);
+                var tempErr = SudokuTool.Errors(tempSolution);
+                if (tempErr < err)
+                {
+                    bestSolution = tempSolution;
+                }
                 extinctions++; // keep track of the attempts
                 Debug.WriteLine($"{err} errors prior to {extinctions} extinction level events");
                 ++seed;// increment the seed
@@ -88,7 +92,7 @@ namespace SudokuTools
         /// <param name="numOrganisms"></param>
         /// <param name="maxEpochs"></param>
         /// <returns></returns>
-        private async Task<int[][]> SolveAsync(int[][] problem, int numOrganisms, int maxEpochs)
+        private async Task<int[][]> SolveAsync(int[][] problem, int numOrganisms, int maxEpochs, double propWorker, int maxAge)
         {
             // start fresh
             var Hive = new List<Organism>(new Organism[numOrganisms]);
@@ -98,7 +102,7 @@ namespace SudokuTools
 
             // initialize combinatorial Organisms with 90% of them workers and the rest explorers
             // Explorers always get a new random matrix to test against.
-            var numWorker = (int)(numOrganisms * 0.90);
+            var numWorker = (int)(numOrganisms * propWorker);
             var numExplorer = numOrganisms - numWorker;
 
 
@@ -129,13 +133,6 @@ namespace SudokuTools
             var epoch = 0;
             while (epoch < maxEpochs)
             {
-                // keep a little log for every 1000 generations
-                if (epoch % 1000 == 0)
-                {
-                    Debug.WriteLine("epoch = " + epoch);
-                    Debug.WriteLine("best error = " + TheBest.Error);
-                }
-
                 // if we somehow have no errors (optimal solution!) then just stop now.
                 if (TheBest.Error == 0) // solution found
                     break;
@@ -201,14 +198,14 @@ namespace SudokuTools
                                 // age this organism
                                 Hive[i].Age++;
 
-                                if (Hive[i].Age > 1000) // die - if so, get a random to replace
+                                if (Hive[i].Age > maxAge) // die - if so, get a random to replace
                                 {
                                     _stats.diedOfOldAge++;
 
                                     // create a new replacement for the hive.
                                     var m = await Task.FromResult(SudokuTool.GetRandomMatrix(problem, _rnd));
                                     var me = await Task.FromResult(SudokuTool.Errors(m));
-                                    Hive[i] = new Organism(0, m, me, 0);
+                                    Hive[i] = new Organism(0, TheBest.Matrix, TheBest.Error, 0);
                                     _stats.organismsBorn++;
                                 }
                             }
@@ -230,7 +227,6 @@ namespace SudokuTools
                 // find the index of the worst worker
                 var worstWkrIndex = await Task.FromResult(SudokuTool.GetWorstWorkerIndex(Hive, numWorker));
 
-
                 // have a  50/50 chance for each block in 2nd organism will be blended into 1st organism 
                 var babyOrg = await Task.FromResult(SudokuTool.MatingResult(bestWorker.Matrix, bestExplorer.Matrix, 0.50, _rnd));
                 _stats.matingPairs++;
@@ -245,7 +241,6 @@ namespace SudokuTools
                 // replace the worst worker with the next generation of worker
                 Hive[worstWkrIndex] = genNext;
                 _stats.culledCount++;
-
                 if (babyErr < TheBest.Error)
                 {
                     TheBest.Error = babyErr;
@@ -253,6 +248,7 @@ namespace SudokuTools
                     _stats.bestBabies++;
                     // Splash();
                 }
+
                 ++epoch;
                 _stats.epochsCompleted++;
             } // while

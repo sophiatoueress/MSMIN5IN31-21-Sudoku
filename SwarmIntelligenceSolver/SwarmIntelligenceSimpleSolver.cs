@@ -14,14 +14,15 @@ namespace SwarmIntelligenceSolver
 
         public SudokuGrid Solve(SudokuGrid sudokuGrid)
         {
-            int mo = 100;
-            int mep = 5000;
+            int mo = 200;
+            int mep = 3000;
             int me = 20;
-            
+            double worker = 0.90;
+            int maxAge = 1000;
             _disp = new ConsoleDisplayMatrix();
             _stats = new EvolutionStats();
             _evo = new EvolutionSolution(_disp, _stats);
-            int[][] result = _evo.SolveB4ExtinctCount_Async(sudokuGrid.Cells, mo, mep, me).Result;
+            int[][] result = _evo.SolveB4ExtinctCount_Async(sudokuGrid.Cells, mo, mep, me, worker, maxAge).Result;
             SudokuGrid toReturn = new SudokuGrid() { Cells = result };
             return toReturn;
             
