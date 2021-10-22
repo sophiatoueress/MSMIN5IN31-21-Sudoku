@@ -14,11 +14,13 @@ namespace Sudoku.DlxlibSolvers
 {
     public class DlxFonction
     {
-        public static void Solver()
+        public static SudokuGrid Solver(SudokuGrid chosenSudoku)
         {
-            var chosenSudoku = ChoosingSudoku();
+            SudokuGrid s = new SudokuGrid();
             var theSudoku = ParsingSudoku(chosenSudoku);
             var grid = new Grid(theSudoku.ToImmutableList());
+            var sw = Stopwatch.StartNew();
+            var elapsed = sw.Elapsed;
 
 
             var internalRows = BuildInternalRowsForGrid(grid);
@@ -27,20 +29,9 @@ namespace Sudoku.DlxlibSolvers
                 .Solve(dlxRows, d => d, r => r)
                 .Where(solution => VerifySolution(internalRows, solution))
                 .ToImmutableList();
-
-            Console.WriteLine();
-
-            if (solutions.Any())
-            {
-                Console.WriteLine($"First solution (of {solutions.Count}):");
-                Console.WriteLine();
-                DrawSolution(internalRows, solutions.First());
-                Console.WriteLine();
-            }
-            else
-            {
-                Console.WriteLine("No solutions found!");
-            }
+            var test = SolutionToGrid(internalRows, solutions.First());
+            s = ParsingbackSudoku(test);
+            return s;
         }
 
         private static IEnumerable<int> Rows => Enumerable.Range(0, 9);
@@ -178,89 +169,46 @@ namespace Sudoku.DlxlibSolvers
             SolutionToGrid(internalRows, solution).Draw();
         }
 
-
-    private static String ChoosingSudoku()
+    private static List<String> ParsingSudoku(SudokuGrid targertSudoku)
     {
-        var solvers = SudokuGrid.GetSolvers();
-        Console.WriteLine("Select difficulty: 1-Easy, 2-Medium, 3-Hard");
-        var strDiff = Console.ReadLine();
-        int.TryParse(strDiff, out var intDiff);
-        List<String> allSudoku = new List<String>();
-        switch (intDiff)
-        {
-            case 1:
-                foreach (string line in System.IO.File.ReadLines(@"C:\Users\Utilisateur\Source\Repos\MSMIN5IN31-21-Sudoku\Puzzles\Sudoku_Easy50.txt"))
+            Int32[][] test = targertSudoku.Cells;
+            var newList = new List<String>();
+            var row = "";
+            for (int i = 0; i < 9; i++)
+            { 
+                for(int j = 0; j < 9; j++)
                 {
-                    allSudoku.Add(line);
-                }
-                break;
-            case 2:
-                foreach (string line in System.IO.File.ReadLines(@"C:\Users\Utilisateur\Source\Repos\MSMIN5IN31-21-Sudoku\Puzzles\Sudoku_hardest.txt"))
-                {
-                     allSudoku.Add(line);
-                }
-                break;
-            case 3:
-                foreach (string line in System.IO.File.ReadLines(@"C:\Users\Utilisateur\Source\Repos\MSMIN5IN31-21-Sudoku\Puzzles\Sudoku_top95.txt"))
-                {
-                    allSudoku.Add(line);
-                }
-                break;
-            default:
-                break;
-        }
-
-        Console.WriteLine($"Choose a puzzle index between 1 and {allSudoku.Count}");
-
-        var choix = Console.ReadLine();
-        int strIdx = int.Parse(choix);
-        String theSudoku = allSudoku[strIdx -1];
-
-        return theSudoku;
-    }
-
-    private static List<String> ParsingSudoku(String targertSudoku)
-    {
-        var newList = new List<String>();
-        var row = "";
-        char val = '0';
-            int i = 0;
-            for (int j = 0; j < 81; j++)
-            {
-                if (targertSudoku[j].CompareTo(val) == 0)
-                {
-                    row = row + " ";
-                }
-                else
-                {
-                    row = row + targertSudoku[j].ToString();
-                }
-                i++;
-                if (i == 9)
-                {
-                    Console.WriteLine(row);
-                    newList.Add(row);
-                    row = "";
-                    i = 0;
-                }
-
-
-                /*for (int i = 0; i < 10; i++)
-                { 
-                    if (targertSudoku[j].CompareTo(val) == 0)
-                     {
-                          row = row + " ";
+                    if(test[j][i] == 0)
+                    {
+                        row = row + " ";
                     }
                     else
                     {
-                        row = row + targertSudoku[j].ToString();
-                        
+                        row = row + test[j][i];
                     }
-                    j++;
-            }*/
-
+                }
+                newList.Add(row);
+                row = "";
             }
             return newList;
     }
+        private static SudokuGrid ParsingbackSudoku(Grid sudoku)
+        {
+            SudokuGrid s = new SudokuGrid();
+            int k = 0;
+            //int[][] parse = s.Cells;
+            string parse = "";
+            //var parse = new (int row, int column)[9][];
+            for (int i = 0; i < 9; i++)
+            {
+                for(int j =0; j < 9; j++)
+                {
+                    parse = parse + sudoku.ValueAt(j, i);
+                }
+            }
+
+            s = SudokuGrid.Parse(parse);
+            return s;
+        }
     }
 }

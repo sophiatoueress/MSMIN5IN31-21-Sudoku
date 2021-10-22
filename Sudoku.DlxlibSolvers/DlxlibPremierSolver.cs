@@ -11,7 +11,7 @@ namespace Sudoku.DlxlibSolvers
         public SudokuGrid Solve(SudokuGrid s)
         {
 
-            DlxFonction.Solver();
+            s = DlxFonction.Solver(s);
             return s;
         }
     }

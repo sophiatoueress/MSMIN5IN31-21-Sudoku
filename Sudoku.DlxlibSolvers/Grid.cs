@@ -16,7 +16,6 @@ namespace Sudoku.DlxlibSolvers
 
         public Grid(IImmutableList<string> rowStrings)
         {
-            Console.WriteLine($"{rowStrings.Count()}");
             if (rowStrings == null) throw new ArgumentNullException(nameof(rowStrings));
             if (rowStrings.Count != 9) throw new ArgumentException(nameof(rowStrings));
 
@@ -93,6 +92,12 @@ namespace Sudoku.DlxlibSolvers
             var part2 = FormatThreeValues(row, 3);
             var part3 = FormatThreeValues(row, 6);
             DrawLine(CentreVertical, CentreVertical, CentreVertical, part1, part2, part3);
+        }
+
+        private string getRow(int row)
+        {
+            var stringRow = FormatThreeValues(row, 0) + FormatThreeValues(row, 3) + FormatThreeValues(row,6); 
+            return stringRow;
         }
 
         private string FormatThreeValues(int row, int skip)
