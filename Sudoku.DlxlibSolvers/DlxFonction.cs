@@ -16,12 +16,10 @@ namespace Sudoku.DlxlibSolvers
     {
         public static SudokuGrid Solver(SudokuGrid chosenSudoku)
         {
-            SudokuGrid s = new SudokuGrid();
             var theSudoku = ParsingSudoku(chosenSudoku);
             var grid = new Grid(theSudoku.ToImmutableList());
             var sw = Stopwatch.StartNew();
             var elapsed = sw.Elapsed;
-
 
             var internalRows = BuildInternalRowsForGrid(grid);
             var dlxRows = BuildDlxRows(internalRows);
@@ -29,9 +27,9 @@ namespace Sudoku.DlxlibSolvers
                 .Solve(dlxRows, d => d, r => r)
                 .Where(solution => VerifySolution(internalRows, solution))
                 .ToImmutableList();
-            var test = SolutionToGrid(internalRows, solutions.First());
-            s = ParsingbackSudoku(test);
-            return s;
+            var getSolution = SolutionToGrid(internalRows, solutions.First());
+            chosenSudoku = ParsingbackSudoku(getSolution);
+            return chosenSudoku;
         }
 
         private static IEnumerable<int> Rows => Enumerable.Range(0, 9);
@@ -194,21 +192,15 @@ namespace Sudoku.DlxlibSolvers
     }
         private static SudokuGrid ParsingbackSudoku(Grid sudoku)
         {
-            SudokuGrid s = new SudokuGrid();
-            int k = 0;
-            //int[][] parse = s.Cells;
             string parse = "";
-            //var parse = new (int row, int column)[9][];
             for (int i = 0; i < 9; i++)
             {
-                for(int j =0; j < 9; j++)
+                for (int j = 0; j < 9; j++)
                 {
                     parse = parse + sudoku.ValueAt(j, i);
                 }
             }
-
-            s = SudokuGrid.Parse(parse);
-            return s;
+            return SudokuGrid.Parse(parse);
         }
     }
 }
