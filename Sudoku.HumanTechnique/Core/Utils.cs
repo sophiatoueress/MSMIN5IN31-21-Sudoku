@@ -92,7 +92,6 @@ namespace Kermalis.SudokuSolver.Core
             }
             return output;
         }
-
         public static string SingleOrMultiToString<T>(this IEnumerable<T> source)
         {
             int i = 0;
