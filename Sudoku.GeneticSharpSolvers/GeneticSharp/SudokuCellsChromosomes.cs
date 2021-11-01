@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Randomizations;
-using GeneticSharp.Extensions.Sudoku;
+using Sudoku.GeneticSharpSolvers;
 using Sudoku.Shared;
 
 namespace Sudoku.GeneticAlgorithmSolver
@@ -41,10 +41,12 @@ namespace Sudoku.GeneticAlgorithmSolver
         /// <returns>a gene with a digit for the corresponding cell index</returns>
         public override Gene GenerateGene(int geneIndex)
         {
+            var rowIndex = geneIndex / 9;
+            var colIndex = geneIndex % 9;
             //If a target mask exist and has a digit for the cell, we use it.
-            if (_targetSudoku != null && _targetSudoku.Cellules[geneIndex] != 0)
+            if (_targetSudoku != null && _targetSudoku.Cells[rowIndex][colIndex] != 0)
             {
-                return new Gene(_targetSudoku.Cellules[geneIndex]);
+                return new Gene(_targetSudoku.Cells[rowIndex][colIndex]);
             }
             var rnd = RandomizationProvider.Current;
             // otherwise we use a random digit.
@@ -62,7 +64,8 @@ namespace Sudoku.GeneticAlgorithmSolver
         /// <returns>A Sudoku board built from the 81 genes</returns>
         public IList<SudokuGrid> GetSudokus()
         {
-            var sudoku = new SudokuGrid(GetGenes().Select(g => (int)g.Value));
+            var cellsArray = GetGenes().Select(g => (int)g.Value).ToArray().ToJaggedArray(9);
+            var sudoku = new SudokuGrid(){Cells = cellsArray };
             return new List<SudokuGrid>(new[] { sudoku });
         }
     }

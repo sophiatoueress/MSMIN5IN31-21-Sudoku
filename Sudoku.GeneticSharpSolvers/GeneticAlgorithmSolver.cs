@@ -6,11 +6,11 @@ using GeneticSharp.Domain.Mutations;
 using GeneticSharp.Domain.Populations;
 using GeneticSharp.Domain.Selections;
 using GeneticSharp.Domain.Terminations;
-using GeneticSharp.Extensions.Sudoku;
 using System.Linq;
 using Sudoku.Shared;
 using System.Collections.Generic;
 using System.Text;
+using Sudoku.GeneticSharpSolvers;
 
 namespace Sudoku.GeneticAlgorithmSolver
 {
@@ -24,7 +24,7 @@ namespace Sudoku.GeneticAlgorithmSolver
            var init = SudokuPermutationsChromosome.AllPermutations;
         }
 
-        public void Solve(SudokuGrid s)
+        public SudokuGrid Solve(SudokuGrid s)
         {
 
             var populationSize = 5000;
@@ -51,7 +51,7 @@ namespace Sudoku.GeneticAlgorithmSolver
                     Termination = new OrTermination(new ITermination[]
                     {
                         new FitnessThresholdTermination(fitnessThreshold),
-                        new FitnessStagnationTermination(10), 
+                        new FitnessStagnationTermination(20), 
                         //new GenerationNumberTermination(generationNb)
                         //new TimeEvolvingTermination(TimeSpan.FromSeconds(10)), 
                     }),
@@ -85,10 +85,7 @@ namespace Sudoku.GeneticAlgorithmSolver
 
             } while (true);
 
-            for (int i = 0; i < solution.Cellules.Count; i++)
-            {
-                s.Cellules[i] = solution.Cellules[i];
-            }
+            return solution;
 
         }
     }

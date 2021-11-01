@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Fitnesses;
-using GeneticSharp.Extensions.Sudoku;
+using Sudoku.GeneticSharpSolvers;
 using Sudoku.Shared;
 
 namespace Sudoku.GeneticAlgorithmSolver
@@ -59,14 +59,15 @@ namespace Sudoku.GeneticAlgorithmSolver
         /// <returns>the number of mistakes the Sudoku contains.</returns>
         public double Evaluate(SudokuGrid testSudoku)
         {
-            // We use a large lambda expression to count duplicates in rows, columns and boxes
-            var cells = testSudoku.Cellules.Select((c, i) => new { index = i, cell = c }).ToList();
-            var toTest = cells.GroupBy(x => x.index / 9).Select(g => g.Select(c => c.cell)) // rows
-              .Concat(cells.GroupBy(x => x.index % 9).Select(g => g.Select(c => c.cell))) //columns
-              .Concat(cells.GroupBy(x => x.index / 27 * 27 + x.index % 9 / 3 * 3).Select(g => g.Select(c => c.cell))); //boxes
-            var toReturn = -toTest.Sum(test => test.GroupBy(x => x).Select(g => g.Count() - 1).Sum()); // Summing over duplicates
-            toReturn -= cells.Count(x => _targetSudoku.Cellules[x.index] > 0 && _targetSudoku.Cellules[x.index] != x.cell); // Mask
-            return toReturn;
+            //// We use a large lambda expression to count duplicates in rows, columns and boxes
+            //var cells = testSudoku.Cellules.Select((c, i) => new { index = i, cell = c }).ToList();
+            //var toTest = cells.GroupBy(x => x.index / 9).Select(g => g.Select(c => c.cell)) // rows
+            //  .Concat(cells.GroupBy(x => x.index % 9).Select(g => g.Select(c => c.cell))) //columns
+            //  .Concat(cells.GroupBy(x => x.index / 27 * 27 + x.index % 9 / 3 * 3).Select(g => g.Select(c => c.cell))); //boxes
+            //var toReturn = -toTest.Sum(test => test.GroupBy(x => x).Select(g => g.Count() - 1).Sum()); // Summing over duplicates
+            //toReturn -= cells.Count(x => _targetSudoku.Cellules[x.index] > 0 && _targetSudoku.Cellules[x.index] != x.cell); // Mask
+            //return toReturn;
+            return -testSudoku.NbErrors(testSudoku);
         }
 
 

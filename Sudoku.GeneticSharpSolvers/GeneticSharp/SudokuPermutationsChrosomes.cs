@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GeneticSharp.Domain.Chromosomes;
 using GeneticSharp.Domain.Randomizations;
-using GeneticSharp.Extensions.Sudoku;
+using Sudoku.GeneticSharpSolvers;
 using Sudoku.Shared;
 
 namespace Sudoku.GeneticAlgorithmSolver
@@ -104,13 +104,13 @@ namespace Sudoku.GeneticAlgorithmSolver
         /// <returns>a list with the single Sudoku built from the genes</returns>
         public virtual IList<SudokuGrid> GetSudokus()
         {
-            var listInt = new List<int>(81);
+            var cellsArray = new int[9][];
             for (int i = 0; i < 9; i++)
             {
                 var perm = GetPermutation(i);
-                listInt.AddRange(perm);
+                cellsArray[i] = perm.ToArray();
             }
-            var sudoku = new SudokuGrid(listInt);
+            var sudoku = new SudokuGrid(){Cells = cellsArray};
             return new List<SudokuGrid>(new[] { sudoku });
         }
 
@@ -183,8 +183,13 @@ namespace Sudoku.GeneticAlgorithmSolver
                 foreach (var perm in AllPermutations)
                 {
                     // Permutation should match current mask row numbers, and have numbers different that other mask rows
-                    if (!Range9.Any(rowIdx => Range9.Any(j => objSudoku.GetCellule(rowIdx, j) > 0
-                                                 && ((rowIdx == i && perm[j] != objSudoku.GetCellule(rowIdx, j)) || (rowIdx != i && perm[j] == objSudoku.GetCellule(rowIdx, j))))))
+                    if (!Range9.Any(rowIdx => Range9.Any(j => objSudoku.Cells[rowIdx][j] > 0
+                                                            && (rowIdx == i && perm[j] != objSudoku.Cells[rowIdx][j] 
+                                                                || (rowIdx != i && perm[j] == objSudoku.Cells[rowIdx][j])
+                                                                )
+                                                            )
+                                    )
+                        )
                     {
                         tempList.Add(perm);
                     }
