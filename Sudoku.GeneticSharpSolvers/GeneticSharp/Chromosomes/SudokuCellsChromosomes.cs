@@ -10,12 +10,15 @@ namespace Sudoku.GeneticAlgorithmSolver
     /// <summary>
     /// This simple chromosome simply represents each cell by a gene with value between 1 and 9, accounting for the target mask if given
     /// </summary>
-    public class SudokuCellsChromosome : ChromosomeBase, ISudokuChromosome
+    public class SudokuCellsChromosome : SudokuChromosomeBase, ISudokuChromosome
     {
+       
+
         /// <summary>
-        /// The target sudoku board to solve
+        /// Defines if the chromosome cell should be initialized with row permutations, allowing for ordered subcrossovers with metaheuristics
         /// </summary>
-        private readonly SudokuGrid _targetSudoku;
+        public bool InitWithPermutations { get; set; }
+
 
         public SudokuCellsChromosome() : this(null)
         {
@@ -25,13 +28,8 @@ namespace Sudoku.GeneticAlgorithmSolver
         /// Constructor that accepts a Sudoku to solve
         /// </summary>
         /// <param name="targetCore.Sudoku">the target sudoku to solve</param>
-        public SudokuCellsChromosome(SudokuGrid targetSudoku) : base(81)
+        public SudokuCellsChromosome(SudokuGrid targetSudoku) : base(targetSudoku, 81)
         {
-            _targetSudoku = targetSudoku;
-            for (int i = 0; i < Length; i++)
-            {
-                ReplaceGene(i, GenerateGene(i));
-            }
         }
 
         /// <summary>
@@ -44,9 +42,9 @@ namespace Sudoku.GeneticAlgorithmSolver
             var rowIndex = geneIndex / 9;
             var colIndex = geneIndex % 9;
             //If a target mask exist and has a digit for the cell, we use it.
-            if (_targetSudoku != null && _targetSudoku.Cells[rowIndex][colIndex] != 0)
+            if (TargetSudoku != null && TargetSudoku.Cells[rowIndex][colIndex] != 0)
             {
-                return new Gene(_targetSudoku.Cells[rowIndex][colIndex]);
+                return new Gene(TargetSudoku.Cells[rowIndex][colIndex]);
             }
             var rnd = RandomizationProvider.Current;
             // otherwise we use a random digit.
@@ -55,7 +53,7 @@ namespace Sudoku.GeneticAlgorithmSolver
 
         public override IChromosome CreateNew()
         {
-            return new SudokuCellsChromosome(_targetSudoku);
+            return new SudokuCellsChromosome(TargetSudoku) {InitWithPermutations = InitWithPermutations};
         }
 
         /// <summary>
@@ -68,5 +66,37 @@ namespace Sudoku.GeneticAlgorithmSolver
             var sudoku = new SudokuGrid(){Cells = cellsArray };
             return new List<SudokuGrid>(new[] { sudoku });
         }
+
+
+
+
+        /// <summary>
+        /// Creates the initial cell genes, either random accounting for the target Sudoku Mask, or according to row permutations with the same constraint
+        /// </summary>
+        protected override void CreateGenes()
+        {
+            if (InitWithPermutations)
+            {
+                for (int rowIndex = 0; rowIndex < 9; rowIndex++)
+                {
+                    var rowPerms = TargetRowsPermutations[rowIndex];
+                    var rndIndx = RandomizationProvider.Current.GetInt(0, rowPerms.Count);
+                    var rowPerm = rowPerms[rndIndx];
+                    for (int colIndex = 0; colIndex < 9; colIndex++)
+                    {
+                        ReplaceGene(9 * rowIndex + colIndex, new Gene(rowPerm[colIndex]));
+                    }
+                }
+            }
+            else
+            {
+                base.CreateGenes();
+            }
+
+        }
+
+
+
+
     }
 }
