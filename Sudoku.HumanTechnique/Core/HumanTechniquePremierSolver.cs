@@ -27,26 +27,26 @@ namespace Sudoku.HumanTechnique
         public Puzzle ConvertSudokuGridToPuzzle(SudokuGrid s)
         {
 
-            int[][] board = new int[9][];
-            int l = 0;
+            //int[][] board = new int[9][];
+            //int l = 0;
 
-            for (int i = 0; i < s.Cells.Count(); i++)
-            {
-                for (int j = 0; j < 9; j++)
-                {
-                    board[i][j] = s.getCell(0, i);
-                    l++;
-                }
-            }
+            //for (int i = 0; i < s.Cells.Count(); i++)
+            //{
+            //    for (int j = 0; j < 9; j++)
+            //    {
+            //        board[i][j] = s.getCell(0, i);
+            //        l++;
+            //    }
+            //}
 
-            Puzzle p = new Puzzle(board, false);
+            Puzzle p = new Puzzle(s.Cells, false);
 
             return p;
         }
 
         public SudokuGrid ConvertPuzzleToSudokuGrid(Puzzle p)
         {
-
+            return new SudokuGrid() { Cells = p.Columns.Select(r => r.Select(c => c.Value).ToArray()).ToArray()};
         }
 
         public SudokuGrid Solve(SudokuGrid s)
@@ -88,7 +88,7 @@ namespace Sudoku.HumanTechnique
                 }
             } while (true);
 
-            return s;
+            return ConvertPuzzleToSudokuGrid(p);
         }
 
         private static readonly SolverTechnique[] _techniques = new SolverTechnique[]
