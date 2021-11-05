@@ -32,6 +32,30 @@ namespace Sudoku.NorvigSolver
 
     public class NorvigDeuxiemeSolver : ISolverSudoku
     {
+        // besoin d'aide pour la conversion
+
+        //public static Sudoku Solve(Sudoku S)
+        //{
+        //    if (S == null || S.is_solved())
+        //    {
+        //        return new Sudoku(S);
+        //    }
+        //    int k = S.least_count();
+        //    Possible p = S.possible(k);
+        //    for (int i = 1; i <= 9; i++)
+        //    {
+        //        if (p.is_on(i))
+        //        {
+        //            Sudoku S1 = new Sudoku(S);
+        //            if (S1.assign(k, i))
+        //            {
+        //                if (Solve(S1))
+        //                {
+        //                    return S1;
+        //                }
+        //            }
+        //        }
+        //    }
 
 
 
