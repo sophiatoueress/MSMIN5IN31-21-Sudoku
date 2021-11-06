@@ -71,6 +71,17 @@ namespace Kermalis.SudokuSolver.Core
             });
         }
 
+        public int[][] GetBoard()
+        {
+            return _board.Select(row => row.Select(cell => cell.Value).ToArray()).ToArray();
+        }
+
+        public bool IsValid()
+        {
+            return _board.All(row =>
+                row.All(cell => cell.Value != 0 && cell.GetCellsVisible().All(neighbour => neighbour.Value != cell.Value)));
+        }
+
         public bool ChangeCandidates(Cell cell, int candidate, bool remove = true)
         {
             return remove ? cell.Candidates.Remove(candidate) : cell.Candidates.Add(candidate);
